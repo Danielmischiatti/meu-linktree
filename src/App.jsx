@@ -2,25 +2,11 @@ import { useState } from "react";
 
 const links = [
   {
-    category: "redes sociais",
-    items: [
-      { label: "Instagram", handle: "@seuperfil", url: "https://instagram.com/seuperfil", icon: "IG" },
-      { label: "TikTok", handle: "@seuperfil", url: "https://tiktok.com/@seuperfil", icon: "TK" },
-      { label: "YouTube", handle: "Seu Canal", url: "https://youtube.com/@seucanal", icon: "YT" },
-    ],
-  },
-  {
     category: "cupons & lojas",
     items: [
       { label: "Amazon", handle: "CUPOM: SEU10", url: "https://amazon.com.br", icon: "AM", badge: "10% OFF" },
       { label: "Shopee", handle: "CUPOM: SEULINK", url: "https://shopee.com.br", icon: "SH", badge: "Frete grátis" },
       { label: "Magalu", handle: "CUPOM: SEUNOME", url: "https://magazineluiza.com.br", icon: "MG", badge: "15% OFF" },
-    ],
-  },
-  {
-    category: "site & portfolio",
-    items: [
-      { label: "Meu Site", handle: "seusite.com.br", url: "https://seusite.com.br", icon: "WB" },
     ],
   },
 ];
@@ -51,13 +37,19 @@ export default function LinkTree() {
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
-      padding: "48px 16px 64px",
+      padding: "40px 16px 64px",
       fontFamily: "'DM Sans', sans-serif",
     }}>
       <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
 
       <style>{`
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html, body {
+          width: 100%;
+          overflow-x: hidden;
+        }
+
         .link-card {
           display: flex;
           align-items: center;
@@ -66,19 +58,24 @@ export default function LinkTree() {
           border: 1px solid #EBEBEB;
           border-radius: 16px;
           padding: 14px 18px;
-          text-decoration: none;
           color: #111;
           cursor: pointer;
           transition: all 0.18s ease;
           position: relative;
           overflow: hidden;
+          width: 100%;
+          -webkit-tap-highlight-color: transparent;
         }
         .link-card:hover {
           border-color: #111;
           transform: translateY(-2px);
           box-shadow: 0 8px 24px rgba(0,0,0,0.07);
         }
-        .link-card:active { transform: translateY(0); }
+        .link-card:active {
+          transform: scale(0.98);
+          background: #F7F7F5;
+        }
+
         .icon-box {
           width: 42px;
           height: 42px;
@@ -92,6 +89,7 @@ export default function LinkTree() {
           letter-spacing: 0.5px;
           flex-shrink: 0;
         }
+
         .badge {
           font-size: 10px;
           font-weight: 600;
@@ -102,6 +100,7 @@ export default function LinkTree() {
           padding: 2px 8px;
           white-space: nowrap;
         }
+
         .copy-btn {
           position: absolute;
           right: 14px;
@@ -110,17 +109,25 @@ export default function LinkTree() {
           background: #F5F5F3;
           border: none;
           border-radius: 8px;
-          padding: 5px 10px;
+          padding: 6px 10px;
           font-size: 11px;
           font-weight: 500;
           color: #555;
           cursor: pointer;
           transition: all 0.15s;
-          opacity: 0;
           font-family: inherit;
+          opacity: 0;
+          white-space: nowrap;
         }
         .link-card:hover .copy-btn { opacity: 1; }
         .copy-btn:hover { background: #111; color: #fff; }
+        .copy-btn.copied { background: #111; color: #fff; opacity: 1; }
+
+        /* Mobile: botão cupom sempre visível (dispositivos sem hover) */
+        @media (hover: none) {
+          .copy-btn { opacity: 1; }
+        }
+
         .category-label {
           font-size: 10px;
           font-weight: 600;
@@ -130,6 +137,7 @@ export default function LinkTree() {
           margin-bottom: 10px;
           margin-top: 28px;
         }
+
         .avatar {
           width: 88px;
           height: 88px;
@@ -143,12 +151,30 @@ export default function LinkTree() {
           border: 3px solid #fff;
           box-shadow: 0 4px 16px rgba(0,0,0,0.08);
           overflow: hidden;
+          flex-shrink: 0;
         }
+
+        .links-container {
+          width: 100%;
+          max-width: 420px;
+        }
+
+        /* Telas pequenas (< 380px) ex: iPhone SE */
+        @media (max-width: 380px) {
+          .avatar { width: 72px; height: 72px; font-size: 26px; }
+          .icon-box { width: 36px; height: 36px; }
+          .link-card { padding: 12px 14px; gap: 10px; }
+          .copy-btn { font-size: 10px; padding: 5px 8px; right: 10px; }
+        }
+
         @keyframes fadeUp {
           from { opacity: 0; transform: translateY(14px); }
           to { opacity: 1; transform: translateY(0); }
         }
-        .animate { animation: fadeUp 0.4s ease forwards; }
+        .animate {
+          opacity: 0;
+          animation: fadeUp 0.4s ease forwards;
+        }
       `}</style>
 
       {/* Avatar */}
@@ -159,27 +185,29 @@ export default function LinkTree() {
       {/* Nome */}
       <h1 className="animate" style={{
         fontFamily: "'DM Serif Display', serif",
-        fontSize: "26px",
+        fontSize: "clamp(22px, 5vw, 28px)",
         fontWeight: "400",
         color: "#111",
         animationDelay: "60ms",
         letterSpacing: "-0.3px",
+        textAlign: "center",
       }}>
-        Seu Nome
+        Marina Botequio
       </h1>
 
       {/* Bio */}
       <p className="animate" style={{
-        fontSize: "14px",
+        fontSize: "clamp(13px, 3.5vw, 14px)",
         color: "#888",
         marginTop: "6px",
         textAlign: "center",
-        maxWidth: "260px",
+        maxWidth: "300px",
         lineHeight: "1.6",
         fontWeight: "300",
         animationDelay: "120ms",
       }}>
-        Uma frase curta sobre você ou o que você faz ✨
+        muito yoga, surf, corridas e cafés 𖧧 ✺
+        <br/>prof. e praticante de yoga ryt 200h
       </p>
 
       {/* Divisor */}
@@ -192,7 +220,7 @@ export default function LinkTree() {
       }} />
 
       {/* Links por categoria */}
-      <div style={{ width: "100%", maxWidth: "420px" }}>
+      <div className="links-container">
         {links.map((group, gi) => (
           <div key={gi}>
             <p className="animate category-label" style={{ animationDelay: `${220 + gi * 60}ms` }}>
@@ -223,6 +251,7 @@ export default function LinkTree() {
                       display: "flex",
                       alignItems: "center",
                       gap: "8px",
+                      flexWrap: "wrap",
                     }}>
                       {item.label}
                       {item.badge && <span className="badge">{item.badge}</span>}
@@ -234,20 +263,23 @@ export default function LinkTree() {
                       overflow: "hidden",
                       textOverflow: "ellipsis",
                       whiteSpace: "nowrap",
+                      paddingRight: item.badge ? "96px" : "0",
                     }}>
                       {item.handle}
                     </div>
                   </div>
 
-                  {/* Seta */}
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ flexShrink: 0, color: "#CCC" }}>
-                    <path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
+                  {/* Seta (só quando não tem cupom) */}
+                  {!item.badge && (
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ flexShrink: 0, color: "#CCC" }}>
+                      <path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  )}
 
                   {/* Botão copiar cupom */}
                   {item.badge && (
                     <button
-                      className="copy-btn"
+                      className={`copy-btn${copied === `${gi}-${ii}` ? " copied" : ""}`}
                       onClick={(e) => {
                         e.stopPropagation();
                         const code = item.handle.replace("CUPOM: ", "");
