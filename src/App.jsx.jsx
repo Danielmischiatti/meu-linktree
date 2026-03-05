@@ -130,11 +130,6 @@ export default function LinkTree() {
         }
       `}</style>
 
-      {/* Avatar */}
-      <div className="avatar animate" style={{ animationDelay: "0ms" }}>
-        <img src="/avatar.jpg" alt="Marina Botequio" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-      </div>
-
       {/* Nome */}
       <h1 className="animate" style={{
         fontFamily: "'DM Serif Display', serif",
@@ -145,7 +140,7 @@ export default function LinkTree() {
         letterSpacing: "-0.3px",
         textAlign: "center",
       }}>
-        Marina Botequio
+        @marinabotequio
       </h1>
 
       {/* Bio */}
