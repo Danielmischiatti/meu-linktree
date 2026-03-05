@@ -28,7 +28,7 @@ export default function LinkTree() {
   return (
     <div style={{
       minHeight: "100vh",
-      background: "#C9B49A",
+      background: "#EDE8E0",
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
@@ -46,7 +46,7 @@ export default function LinkTree() {
           align-items: center;
           justify-content: center;
           gap: 12px;
-          background: #B89E82;
+          background: #DDD5C8;
           border: none;
           border-radius: 100px;
           padding: 18px 24px;
@@ -59,7 +59,7 @@ export default function LinkTree() {
           position: relative;
         }
         .link-card:hover {
-          background: #A58C6E;
+          background: #CEC5B5;
           transform: translateY(-2px);
           box-shadow: 0 6px 20px rgba(0,0,0,0.07);
         }
@@ -104,7 +104,7 @@ export default function LinkTree() {
           justify-content: center;
           font-size: 36px;
           margin-bottom: 18px;
-          border: 4px solid #C9B49A;
+          border: 4px solid #EDE8E0;
           box-shadow: 0 4px 20px rgba(0,0,0,0.08);
           overflow: hidden;
           flex-shrink: 0;
