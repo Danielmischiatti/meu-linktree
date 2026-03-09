@@ -1,3 +1,7 @@
+import { useEffect } from "react";
+
+const GA_ID = "G-6VNXX5JVT7";
+
 const links = [
   {
     category: "cupons & lojas",
@@ -24,7 +28,33 @@ const iconColors = {
   "✉":  "#7B6352",
 };
 
+function trackClick(label) {
+  if (typeof window.gtag === "function") {
+    window.gtag("event", "link_click", {
+      event_category: "links",
+      event_label: label,
+    });
+  }
+}
+
 export default function LinkTree() {
+  useEffect(() => {
+    // Carrega o script do Google Analytics
+    const script1 = document.createElement("script");
+    script1.async = true;
+    script1.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
+    document.head.appendChild(script1);
+
+    const script2 = document.createElement("script");
+    script2.innerHTML = `
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '${GA_ID}');
+    `;
+    document.head.appendChild(script2);
+  }, []);
+
   return (
     <div style={{
       minHeight: "100vh",
@@ -94,29 +124,12 @@ export default function LinkTree() {
           text-align: center;
         }
 
-        .avatar {
-          width: 96px;
-          height: 96px;
-          border-radius: 50%;
-          background: linear-gradient(135deg, #BFA080, #9C7E5E);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 36px;
-          margin-bottom: 18px;
-          border: 4px solid #EDE8E0;
-          box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-          overflow: hidden;
-          flex-shrink: 0;
-        }
-
         .links-container {
           width: 100%;
           max-width: 400px;
         }
 
         @media (max-width: 380px) {
-          .avatar { width: 80px; height: 80px; font-size: 28px; }
           .link-card { padding: 16px 20px; }
         }
 
@@ -180,7 +193,10 @@ export default function LinkTree() {
                   key={ii}
                   className="link-card animate"
                   style={{ animationDelay: `${240 + gi * 60 + ii * 50}ms` }}
-                  onClick={() => window.open(item.url, "_blank")}
+                  onClick={() => {
+                    trackClick(item.label);
+                    window.open(item.url, "_blank");
+                  }}
                 >
                   {/* Ícone à esquerda */}
                   <div
